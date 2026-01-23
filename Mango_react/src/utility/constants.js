@@ -1,0 +1,26 @@
+export const ROUTES = {
+  HOME: '/',
+  LOGIN: '/login',
+    REGISTER: '/register',
+    CART: '/cart',
+    CHECKOUT: '/checkout',
+    ORDER_CONFIRMATION: '/order-confirmation',
+    MENU_MANAGEMENT: '/menu-management',
+    ORDER_MANAGEMENT: '/order-management',
+};
+export const API_BASE_URL = "https://localhost:7086"
+
+export const CATEGORY = [
+    "Appetizer",
+    "Entree",
+    "Dessert",
+   
+];
+
+export const SPECIAL_TAG = [
+    "",
+    "Chef's Special",
+    "Top Rated",
+    "Best Seller",
+    "New",
+];

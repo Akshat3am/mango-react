@@ -1,0 +1,173 @@
+import React from 'react'
+import { CATEGORY,SPECIAL_TAG } from '../../utility/constants';
+import { toast } from 'react-toastify';
+function MenuItemModal({formData, onSubmit, onClose , isSubmitting , onChange}) {
+    const errors = [];
+ const  handleSubmit = (e) => {
+    console.log("Submitting form data:", formData);
+    e.preventDefault();
+    if(!formData.name?.trim()){
+      errors.push("Name is required");
+     
+    }
+    if(!formData.category?.trim()){
+      errors.push("Category is required");
+    
+    }
+    if(!formData.price || parseFloat(formData.price)<=0 || parseFloat(formData.price)>=1000){
+      errors.push("Valid Price is required");
+     
+    }
+if( errors.length>0){
+ toast.error(
+    <div>
+        <strong>Form Submission Errors:</strong>
+        <ul className = "mb-0 mt-1 ps-3">{
+            errors.map((err,idx)=>(<li key={idx}>{err}</li>))
+        }</ul>
+    </div>
+ )
+}
+   
+    onSubmit(formData);
+  } 
+ 
+    return (
+    <>
+      {/* Bootstrap Modal Backdrop */}
+      <div className="modal-backdrop fade show" />
+
+      {/* Bootstrap Modal */}
+      <div
+        className="modal fade show"
+        style={{ display: "block" }}
+        tabIndex="-1"
+        role="dialog"
+      >
+        <div className={`modal-dialog modal-lg`} role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Add New Menu Item</h5>
+              <button type="button" className="btn-close" aria-label="Close" onClick={onClose}/>
+            </div>
+            <div className="modal-body">
+              <form onSubmit ={handleSubmit}>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Name *</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        value ={formData.name || ""}
+                        onChange={onChange}
+                        placeholder="Enter menu item name"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Category *</label>
+                      <select
+                        className="form-select"
+                        name="category"
+                        value={formData.category || ""}
+                        onChange={onChange}
+                        placeholder="Select Category"
+                      >
+                        <option value="">Select Category</option>
+                        {CATEGORY.map((cat)=>(
+                        <option value={cat} key={cat}>
+                          {cat}
+                        </option>
+                        ))}
+                        
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Description</label>
+                  <textarea
+                    className="form-control"
+                    name="description"
+                    rows="3"
+                    value={formData.description || ""}
+                    onChange={onChange}
+                    placeholder="Enter menu item description"
+                  />
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Price * ($)</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="price"
+                        step="0.01"
+                        min="0.01"
+                        value ={formData.price || ""}
+                        onChange={onChange}
+                        placeholder="Enter price"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Special Tag</label>
+                      <select
+                        className="form-select"
+                        name="specialTag"
+                        value={formData.specialTag || ""}
+                        onChange={onChange}
+                        placeholder="Select Special Tag"
+                      >
+
+                       <option value="">Select Special Tag</option>
+                        {SPECIAL_TAG.map((tag)=>(
+                        <option value={tag} key={tag}>  {tag}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Image</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    name="image"
+                    onChange={onChange}
+                    accept="image/*"
+                  />
+                  <div className="form-text">
+                    Upload an image for the menu item
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-end gap-2">
+                  <button type="button" className="btn btn-secondary" onClick={onClose}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                    <span className="spinner-border spinner-border-sm me-2" />) 
+                    :  <>CREATE MENU ITEM</>}
+                   
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default MenuItemModal
