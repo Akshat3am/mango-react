@@ -1,7 +1,7 @@
 import React from 'react'
 import { API_BASE_URL } from '../../utility/constants'
 
-function MenuItemsTable({menuItems,isLoading,error,refetch,onDelete}) {
+function MenuItemsTable({menuItems,isLoading,error,refetch,onDelete,onEdit}) {
  if (isLoading) {
     return(
     <div className="text-center py-4">
@@ -88,7 +88,7 @@ function MenuItemsTable({menuItems,isLoading,error,refetch,onDelete}) {
                 <div className="btn-group" role="group">
                   <button
                     className="btn btn-sm btn-outline-success"
-                    title="Edit"
+                    title="Edit" onClick={() => onEdit(item)}
                   >
                     <i className="bi bi-pencil"></i>
                   </button>

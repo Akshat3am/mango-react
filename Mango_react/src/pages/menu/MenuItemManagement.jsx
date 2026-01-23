@@ -78,19 +78,16 @@ const handleInputChange = (e) => {
     }
 };
   const handleEditMenuItem = async (item) => {
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete the menu item "${item.name}"?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
+    setSelectedMenuItem(item);
+    setShowModal(true);
+    setFormData({
+        name: item.name || '',
+        description: item.description || '',
+        category: item.category || '',
+        price: item.price || '',
+        specialTag: item.specialTag || '',
+        image: null,
     });
-    if(result.isConfirmed) {
-        await deleteMenuItem(item.id).unwrap();
-    Swal.fire('Deleted!','Menu item has been deleted.','success');
-    }
 };
   const handleAddMenuItem = async (item) => {
    resetForm();
@@ -110,17 +107,34 @@ try{
     if(formData.image){
         formDataToSend.append("file", formData.image);
     }
+    if(selectedMenuItem){
+      formDataToSend.append("id", selectedMenuItem.id);
+    }
 let result;
+if(selectedMenuItem){
+  result = await updateMenuItem({
+  id: selectedMenuItem.id,
+  formData: formDataToSend,
+}).unwrap();
 
-//call api to create
-result = await createMenuItem(formDataToSend).unwrap();
-if(result.success!== false){
-toast.success("Menu item created successfully");
-refetch();
+  if(result.success !== false){
+    toast.success("Menu item updated successfully");
+    refetch();
+    }
+    else{
+    toast.error("Failed to update menu item");
+    }
+} else{
+  result = await createMenuItem(formDataToSend).unwrap();
+   if(result.success !== false){
+    toast.success("Menu item created successfully");
+    refetch();
+    }
+    else{
+    toast.error("Failed to create menu item");
+    }
 }
-else{
-toast.error("Failed to create menu item");
-}
+
     setShowModal(false);
 resetForm();
     // optional: reset form
@@ -154,11 +168,11 @@ finally{
       <div className="row">
         <div className="col">
           <div className="card">
-            <div className="card-body"> <MenuItemsTable menuItems={menuItems} isLoading={isLoading} error={error} refetch={refetch} onDelete={handleDeleteMenuItem} /></div>
+            <div className="card-body"> <MenuItemsTable menuItems={menuItems} isLoading={isLoading} error={error} refetch={refetch} onDelete={handleDeleteMenuItem} onEdit={handleEditMenuItem} /></div>
           </div>
         </div>
       </div>
-     {showModal && <MenuItemModal formData={formData} onSubmit={handleFormSubmit} onClose={handleCloseModal} isSubmitting={isSubmitting} onChange={handleInputChange} />}
+     {showModal && <MenuItemModal formData={formData} onSubmit={handleFormSubmit} onClose={handleCloseModal} isSubmitting={isSubmitting} onChange={handleInputChange} isEditing = {selectedMenuItem !== null} />}
     </div>
   )
 }

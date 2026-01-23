@@ -32,14 +32,15 @@ export const menuItemsApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["MenuItem"],
         }),
-         UpdateMenuItem: builder.mutation({
-            query: (id,formData) => ({
-                url: `/MenuItem?id=${id}`,
-                method: "PUT",
-                body: formData,
-            }),
-            invalidatesTags: ["MenuItem"],
-        }),
+        updateMenuItem: builder.mutation({
+  query: ({ id, formData }) => ({
+    url: `/MenuItem?id=${id}`,
+    method: "PUT",
+    body: formData,
+  }),
+  invalidatesTags: ["MenuItem"],
+}),
+
     }),
 });
 

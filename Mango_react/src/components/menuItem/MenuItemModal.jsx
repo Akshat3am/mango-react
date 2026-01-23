@@ -1,7 +1,7 @@
 import React from 'react'
 import { CATEGORY,SPECIAL_TAG } from '../../utility/constants';
 import { toast } from 'react-toastify';
-function MenuItemModal({formData, onSubmit, onClose , isSubmitting , onChange}) {
+function MenuItemModal({formData, onSubmit, onClose , isSubmitting , onChange , isEditing}) {
     const errors = [];
  const  handleSubmit = (e) => {
     console.log("Submitting form data:", formData);
@@ -47,7 +47,7 @@ if( errors.length>0){
         <div className={`modal-dialog modal-lg`} role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add New Menu Item</h5>
+              <h5 className="modal-title"> {isEditing ? "Edit Menu Item" : "Add New Menu Item"}</h5>
               <button type="button" className="btn-close" aria-label="Close" onClick={onClose}/>
             </div>
             <div className="modal-body">
@@ -157,7 +157,7 @@ if( errors.length>0){
                   <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                     {isSubmitting ? (
                     <span className="spinner-border spinner-border-sm me-2" />) 
-                    :  <>CREATE MENU ITEM</>}
+                    :  <>{isEditing ? "Update Menu Item" : "Create Menu Item"}</>}
                    
                   </button>
                 </div>
