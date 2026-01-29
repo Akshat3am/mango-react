@@ -1,7 +1,20 @@
 import React from 'react'
 import {ROUTES} from '../../utility/constants'
+import { useSelector } from 'react-redux'
 import { NavLink,Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logout  } from '../../store/slice/authSlice'
+import { useNavigate } from 'react-router-dom'
 function Header() {
+
+  const {isAuthenticated,user} = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+const handleLogout =() =>{
+  dispatch(logout());
+  navigate(ROUTES.HOME);
+}
   return (
       <nav className="navbar navbar-expand-lg  border-bottom shadow-sm">
       <div className="container py-2">
@@ -47,8 +60,7 @@ function Header() {
                 </span>
               </NavLink>
             </li>
-
-            <li className="nav-item dropdown">
+{isAuthenticated ? (<> <li className="nav-item dropdown">
               <button
                 className="nav-link dropdown-toggle btn btn-link d-flex align-items-center gap-2"
                 data-bs-toggle="dropdown"
@@ -93,14 +105,14 @@ function Header() {
                   <hr className="dropdown-divider my-2" />
                 </li>
                 <li>
-                  <button className="dropdown-item d-flex align-items-center gap-2 text-danger rounded-2">
+                  <button onClick={handleLogout}className="dropdown-item d-flex align-items-center gap-2 text-danger rounded-2">
                     <i className="bi bi-box-arrow-right"></i>
                     <span>Logout</span>
                   </button>
                 </li>
               </ul>
             </li>
-            <li className="nav-item">
+          </>):(<>  <li className="nav-item">
               <NavLink to={ROUTES.LOGIN} className="nav-link">
                 Login
               </NavLink>
@@ -109,7 +121,8 @@ function Header() {
               <NavLink to={ROUTES.REGISTER} className="nav-link">
                 Register
               </NavLink>
-            </li>
+            </li></>)}
+           
            
           </ul>
         </div>

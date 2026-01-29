@@ -8,7 +8,7 @@ import Checkout from '../pages/cart/Checkout'
 import OrderConfirmation from '../pages/order/OrderConfirmation'
 import MenuItemManagement from '../pages/menu/MenuItemManagement'
 import OrderManagement from '../pages/order/OrderManagement'
-
+import MenuItemDetails from '../pages/menu/MenuItemDetails'
 import { ROUTES } from '../utility/constants'
 const AppRoutes = () => {
   return (
@@ -21,6 +21,7 @@ const AppRoutes = () => {
     <Route path = {ROUTES.ORDER_CONFIRMATION} element={<OrderConfirmation />} />
     <Route path = {ROUTES.MENU_MANAGEMENT} element={<MenuItemManagement />} />
     <Route path = {ROUTES.ORDER_MANAGEMENT} element={<OrderManagement />} />
+    <Route path={ROUTES.MENU_DETAIL} element={<MenuItemDetails />} />
    </Routes>
   )
 }
