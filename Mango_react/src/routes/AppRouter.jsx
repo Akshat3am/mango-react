@@ -10,16 +10,19 @@ import MenuItemManagement from '../pages/menu/MenuItemManagement'
 import OrderManagement from '../pages/order/OrderManagement'
 import MenuItemDetails from '../pages/menu/MenuItemDetails'
 import { ROUTES } from '../utility/constants'
+import RoleBasedRoutes from './RoleBasedRoutes'
 const AppRoutes = () => {
   return (
    <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
     <Route path={ROUTES.LOGIN} element={<Login />} />
     <Route path = {ROUTES.REGISTER} element={<Register />} />
-    <Route path={ROUTES.CART} element={<Cart />} />
+    <Route path={ROUTES.CART} element={
+      <RoleBasedRoutes><Cart /></RoleBasedRoutes>} />
     <Route path = {ROUTES.CHECKOUT} element={<Checkout />} />
     <Route path = {ROUTES.ORDER_CONFIRMATION} element={<OrderConfirmation />} />
-    <Route path = {ROUTES.MENU_MANAGEMENT} element={<MenuItemManagement />} />
+    <Route path = {ROUTES.MENU_MANAGEMENT} element={
+      <RoleBasedRoutes allowedRoles = {[ROLES.ADMIN]}><MenuItemManagement /></RoleBasedRoutes>} />
     <Route path = {ROUTES.ORDER_MANAGEMENT} element={<OrderManagement />} />
     <Route path={ROUTES.MENU_DETAIL} element={<MenuItemDetails />} />
    </Routes>

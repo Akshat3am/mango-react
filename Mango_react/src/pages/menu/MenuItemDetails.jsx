@@ -3,8 +3,11 @@ import { NavLink, useParams } from 'react-router-dom'
 import { useGetMenuItemsByIdQuery } from '../../store/api/menuItemApi';
 import { API_BASE_URL, ROUTES } from '../../utility/constants';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { addToCart } from '../../store/slice/cartSlice';
 function MenuItemDetails() {
-
+const dispatch = useDispatch();
   const {id} = useParams(); 
   const itemId = parseInt(id);
   const isValidItemId = !isNaN(itemId) && itemId > 0;
@@ -17,7 +20,16 @@ console.log(id);
     error,
     refetch,
   } = useGetMenuItemsByIdQuery(itemId);
- console.log(selectedMenuItem)
+  const handleAddToCart = () => {
+    dispatch(addToCart({
+     id:selectedMenuItem.id,
+      name:selectedMenuItem.name,
+      price:selectedMenuItem.price,
+      image:selectedMenuItem.image,
+      quantity:quantity,
+    }));
+    toast.success(`${item.name} added to cart!`);
+  }
   if(!isValidItemId){
     return(  <div className="container py-5">
         <div className="alert alert-danger">
@@ -179,7 +191,7 @@ return(
                       </div>
                       <div className="col-sm-7">
                         <div className="d-grid gap-2">
-                          <button className="btn btn-primary btn-lg fw-semibold shadow-sm">
+                          <button className="btn btn-primary btn-lg fw-semibold shadow-sm" onClick={handleAddToCart}>
                             <i className="bi bi-cart-plus me-2"></i>
                             Add to Cart -
                           </button>

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 function Header() {
 
   const {isAuthenticated,user} = useSelector((state) => state.auth);
+   const {totalItems} = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,7 +57,7 @@ const handleLogout =() =>{
                   className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-white shadow-sm"
                   style={{ fontSize: "0.7rem" }}
                 >
-                  10
+                  {totalItems>0 ? totalItems : 0}
                 </span>
               </NavLink>
             </li>
@@ -68,13 +69,14 @@ const handleLogout =() =>{
               >
                 <i className="bi bi-person-circle fs-5 text-primary"></i>
                 <span className="text-truncate" style={{ maxWidth: "120px" }}>
-                  Hello
+                  Hello {user?.name?.split(" ")[0] || "User"}
                 </span>
               </button>
               <ul
                 className="dropdown-menu dropdown-menu-end shadow border rounded-3 p-2 small"
                 style={{
                   minWidth: "220px",
+                  zIndex: 1050,
                   "--bs-dropdown-link-active-bg":
                     "rgba(var(--bs-primary-rgb), .12)",
                   "--bs-dropdown-link-active-color": "var(--bs-body-color)",
@@ -83,7 +85,7 @@ const handleLogout =() =>{
                 }}
               >
                 {/* Removed header (avatar/name/role) for a cleaner minimal dropdown */}
-                <li>
+                {user?.role === "ADMIN" && (<> <li>
                   <NavLink
                     to={ROUTES.ORDER_MANAGEMENT}
                     className="dropdown-item d-flex align-items-center gap-2 rounded-2"
@@ -101,9 +103,11 @@ const handleLogout =() =>{
                     <span>Menu Management</span>
                   </NavLink>
                 </li>
-                <li>
+                   <li>
                   <hr className="dropdown-divider my-2" />
-                </li>
+                </li></> )}
+              
+             
                 <li>
                   <button onClick={handleLogout}className="dropdown-item d-flex align-items-center gap-2 text-danger rounded-2">
                     <i className="bi bi-box-arrow-right"></i>

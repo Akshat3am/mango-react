@@ -4,11 +4,25 @@ import { API_BASE_URL , CATEGORY  } from '../utility/constants';
 import {ROUTES}  from '../utility/constants';
 import { Link , NavLink} from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../store/slice/cartSlice';
+import { toast } from 'react-toastify';
 function Home() {
+  const dispatch = useDispatch();
 const {data:menuItems=[], 
   isLoading, 
   error, 
   refetch} = useGetMenuItemsQuery();
+  const handleAddToCart = (item) => {
+    dispatch(addToCart({
+     id:item.id,
+      name:item.name,
+      price:item.price,
+      image:item.image,
+      quantity:1,
+    }));
+    toast.success(`${item.name} added to cart!`);
+  }
 const[searchTerm,setSearchTerm] = useState('');
 const[categoryFilter,setCategoryFilter] = useState('All');
 
@@ -79,7 +93,7 @@ const filteredMenuItems = menuItems.filter((item) => {
           </p>
         </div>):(  <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-5">
         {filteredMenuItems.map((item) =>(
-          <div className="col">
+          <div className="col" key = {item.id}>
             <div className="card h-100 border shadow-sm position-relative">
               <div className="position-relative overflow-hidden rounded-top">
                 <img
@@ -139,7 +153,7 @@ const filteredMenuItems = menuItems.filter((item) => {
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <button className="btn btn-primary w-100 btn-sm fw-semibold">
+                      <button className="btn btn-primary w-100 btn-sm fw-semibold" onClick = {() => handleAddToCart(item)}>
                         <i className="bi bi-cart-plus me-1"></i>Add Cart
                       </button>
                     </div>
